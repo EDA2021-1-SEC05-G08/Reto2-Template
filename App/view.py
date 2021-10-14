@@ -33,26 +33,124 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
+def printAuthorData(author):
+    """
+    Imprime la información del autor seleccionado
+    """
+    if author:
+        print('Autor encontrado: ' + author['name'])
+        print('Promedio: ' + str(author['average_rating']))
+        print('Total de libros: ' + str(lt.size(author['books'])))
+        for book in lt.iterator(author['books']):
+            print('Titulo: ' + book['title'] + '  ISBN: ' + book['isbn'])
+        print("\n")
+    else:
+        print('No se encontro el autor.\n')
+
+
+def printBooksbyTag(books):
+    """
+    Imprime los libros que han sido clasificados con
+    una etiqueta
+    """
+    if (books):
+        print('Se encontraron: ' + str(lt.size(books)) + ' Libros.')
+        for book in lt.iterator(books):
+            print(book['title'])
+        print("\n")
+    else:
+        print("No se econtraron libros.\n")
+
+
+def printBooksbyYear(books):
+    """
+    Imprime los libros que han sido publicados en un
+    año
+    """
+    if(books):
+        print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
+        for book in lt.iterator(books):
+            print(book['title'])
+        print("\n")
+    else:
+        print("No se encontraron libros.\n")
+
+
+def printBestBooks(books):
+    """
+    Imprime la información de los mejores libros
+    por promedio
+    """
+    size = lt.size(books)
+    if size:
+        print(' Estos son los mejores libros: ')
+        for book in lt.iterator(books):
+            print('Titulo: ' + book['title'] + '  ISBN: ' +
+                  book['isbn'] + ' Rating: ' + book['average_rating'])
+        print("\n")
+    else:
+        print('No se encontraron libros.\n')
+
+
+# Menu de opciones
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Inicializar Catálogo")
+    print("2- Cargar información en el catálogo")
+    print("3- Consultar los libros de un año")
+    print("4- Consultar los libros de un autor")
+    print("5- Consultar los Libros por etiqueta")
+    print("0- Salir")
 
-catalog = None
 
-"""
-Menu principal
-"""
+# Funciones de inicializacion
+
+def initCatalog():
+    """
+    Inicializa el catalogo de libros
+    """
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    """
+    Carga los libros en el catalogo
+    """
+    controller.loadData(catalog)
+
+
+# Menu principal
+
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
+
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("Inicializando Catálogo ....")
+        cont = controller.initCatalog()
 
     elif int(inputs[0]) == 2:
-        pass
+        print("Cargando información de los archivos ....")
+        controller.loadData(cont)
+        print('Libros cargados: ' + str(controller.booksSize(cont)))
+        print('Autores cargados: ' + str(controller.authorsSize(cont)))
+        print('Géneros cargados: ' + str(controller.tagsSize(cont)))
 
+    elif int(inputs[0]) == 3:
+        number = input("Buscando libros del año?: ")
+        books = controller.getBooksYear(cont, int(number))
+        printBooksbyYear(books)
+
+    elif int(inputs[0]) == 4:
+        authorname = input("Nombre del autor a buscar: ")
+        authorinfo = controller.getBooksByAuthor(cont, authorname)
+        printAuthorData(authorinfo)
+
+    elif int(inputs[0]) == 5:
+        label = input("Etiqueta a buscar: ")
+        books = controller.getBooksByTag(cont, label)
+        printBooksbyTag(books)
     else:
         sys.exit(0)
 sys.exit(0)
