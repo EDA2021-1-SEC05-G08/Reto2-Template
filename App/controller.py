@@ -62,7 +62,7 @@ def loadData(catalog):
 
 def loadBooks(catalog):
 
-    booksfile = cf.data_dir + 'Moma/Artworks-utf8-large.csv'
+    booksfile = cf.data_dir + 'MoMa/Artworks-utf8-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
         model.addBook(catalog, book)
@@ -71,7 +71,7 @@ def loadBooks(catalog):
 
 def loadAristas(catalog):
 
-    booksfile = cf.data_dir + 'Moma/Artists-utf8-large.csv'
+    booksfile = cf.data_dir + 'MoMa/Artists-utf8-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
         model.addArtistas(catalog, book)
